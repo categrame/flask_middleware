@@ -2,7 +2,7 @@ import functools
 import json
 import os
 
-import flask
+from flask import Flask, request
 
 from authlib.client import OAuth2Session
 import google.oauth2.credentials
@@ -10,7 +10,7 @@ import googleapiclient.discovery
 
 import google_auth as google_auth
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 app.secret_key = os.environ.get("FN_FLASK_SECRET_KEY", default=False)
 
 app.register_blueprint(google_auth.app)

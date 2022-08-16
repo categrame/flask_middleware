@@ -2,7 +2,7 @@ import functools
 import json
 import os
 
-import flask
+from flask import Flask, request
 
 from authlib.client import OAuth2Session
 import google.oauth2.credentials
@@ -10,7 +10,7 @@ import googleapiclient.discovery
 
 import google_auth
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 app.secret_key = os.environ.get("FN_FLASK_SECRET_KEY", default=False)
 
 app.register_blueprint(google_auth.app)
@@ -22,3 +22,9 @@ def index():
         return '<div>You are currently logged in as ' + user_info['given_name'] + '<div><pre>' + json.dumps(user_info, indent=4) + "</pre>"
 
     return 'You are not currently logged in.'
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        print("Data received from webhook is: ", request.json)
+        return "Webhook received !"
